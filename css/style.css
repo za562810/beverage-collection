@@ -1,0 +1,1006 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Noto Sans", sans-serif;
+}
+
+.material-symbols-rounded {
+  font-variation-settings: "FILL" 1, "wght" 500, "GRAD" 0, "opsz" 48;
+}
+
+.material-symbols-rounded.heart {
+  font-variation-settings: "FILL" 0, "wght" 500, "GRAD" 0, "opsz" 48;
+  color: var(--primary-color);
+}
+
+.material-symbols-rounded.heart,
+.material-symbols-rounded.member,
+.material-symbols-rounded.cancel {
+  padding: 8px;
+  cursor: pointer;
+}
+.material-symbols-rounded.heart:hover,
+.material-symbols-rounded.member:hover,
+.material-symbols-rounded.cancel:hover {
+  background-color: rgba(132, 129, 127, 0.2);
+  border-radius: 50%;
+}
+
+:root {
+  --primary-color: #4a41b4;
+  --lightPrimary-color: #9d9cd4;
+  --lightPrimary100-color: #eeeefa;
+  --darkPrimary-color: #2f2e5f;
+  --secondary-color: #f3a243;
+  --lightSecondary-color: #f8f1ea;
+  --darkSecondary-color: #ef7836;
+  --neutral-color: #faf7f7;
+  --grey100: #f1f1f1;
+  --grey200: #e1e1e1;
+  --grey400: #b0b0b0;
+  --grey700: #585858;
+  --grey900: #1f1f1f;
+}
+
+body {
+  background-color: var(--neutral-color);
+}
+
+nav {
+  height: 64px;
+  display: flex;
+  padding: 0 2rem;
+  justify-content: space-between;
+  align-items: center;
+  top: 0;
+  width: 100vw;
+  z-index: 30;
+  position: absolute;
+}
+nav div.leftGroup {
+  display: flex;
+  justify-content: center;
+}
+nav div.leftGroup .logo {
+  display: flex;
+  align-items: center;
+}
+nav div.leftGroup .logo img {
+  width: 32px;
+}
+nav .tab {
+  margin-left: 40px;
+  list-style-type: none;
+  display: flex;
+}
+nav .tab a {
+  height: 64px;
+  background-color: inherit;
+  text-decoration: none;
+  color: var(--primary-color);
+  font-weight: 500;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 22px 16px;
+  transition: 0.3s;
+}
+nav .tab a:hover {
+  font-weight: 600;
+}
+nav .tab a.active {
+  font-weight: 600;
+  border-bottom: 4px solid var(--primary-color);
+}
+nav span {
+  color: var(--primary-color);
+}
+
+nav.nav-brand {
+  border-bottom: 1px solid lightgrey;
+  background-color: var(--neutral-color);
+  position: fixed !important;
+}
+nav.nav-brand a {
+  color: var(--primary-color);
+}
+nav.nav-brand span {
+  color: var(--primary-color);
+}
+
+.banner {
+  display: flex;
+  width: 100vw;
+  height: 400px;
+  position: relative;
+  background: linear-gradient(116.19deg, #f3a243 39.96%, #ef7836 76.91%);
+  overflow: hidden;
+}
+.banner .title {
+  display: flex;
+  position: absolute;
+  flex-direction: column;
+  margin: 32px 24px 32px 64px;
+  bottom: 0;
+  justify-content: end;
+  z-index: 1;
+  width: 50%;
+  gap: 12px;
+}
+.banner .title h1 {
+  color: var(--darkPrimary-color);
+  font-size: 3.5rem;
+  font-weight: 1000;
+}
+.banner .title p {
+  font-size: 1rem;
+  color: var(--darkPrimary-color);
+}
+.banner img {
+  position: absolute;
+  bottom: -56px;
+  right: -96px;
+  width: 720px;
+}
+
+.filter {
+  display: flex;
+  justify-content: space-between;
+  margin: 16px 0 32px 0;
+  align-items: center;
+  transition: 100ms ease;
+  position: relative;
+}
+.filter .filterL {
+  display: flex;
+  gap: 16px;
+}
+.filter .search {
+  position: relative;
+  display: flex;
+}
+.filter .search input {
+  border: 0;
+  height: 40px;
+  width: 240px;
+  border: 1px solid var(--grey400);
+  border-radius: 8px;
+  padding: 4px 16px;
+  background-color: white;
+  transition: all 0.2s;
+}
+.filter .search input:hover {
+  box-shadow: 0px 0px 6px 0px rgba(207, 114, 47, 0.4);
+  border-color: var(--grey700);
+  transition: all 0.2s;
+}
+.filter .search input::-moz-placeholder {
+  color: var(--grey400);
+  font-size: 1rem;
+}
+.filter .search input::placeholder {
+  color: var(--grey400);
+  font-size: 1rem;
+}
+.filter .search span {
+  color: var(--grey700);
+  position: absolute;
+  right: 8px;
+  z-index: 1;
+  padding: 8px;
+  cursor: pointer;
+}
+.filter .search span:hover {
+  background-color: rgba(132, 129, 127, 0.2);
+  border-radius: 50%;
+}
+.filter ::-webkit-datetime-edit-text {
+  color: var(--grey400);
+  padding: 0 4px;
+}
+.filter ::-webkit-calendar-picker-indicator {
+  font-size: 20px;
+}
+.filter input[type=month],
+.filter #brand-list {
+  height: 40px;
+  width: 200px;
+  border: 1px solid var(--grey400);
+  border-radius: 8px;
+  padding: 4px 12px;
+  background-color: white;
+  transition: all 0.2s;
+}
+.filter input[type=month]:hover,
+.filter #brand-list:hover {
+  box-shadow: 0px 0px 6px 0px rgba(207, 114, 47, 0.4);
+  border-color: var(--grey700);
+  transition: all 0.2s;
+}
+.filter .sort {
+  display: flex;
+  gap: 8px;
+  position: relative;
+  color: var(--grey700);
+  border-radius: 8px;
+  padding: 10px 12px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.filter .sort:hover, .filter .sort:focus {
+  background-color: rgba(207, 114, 47, 0.2);
+  transition: all 0.2s;
+}
+.filter .sort p {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--grey700);
+}
+.filter .dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  width: 120px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  right: 0;
+  top: 40px;
+  cursor: pointer;
+}
+.filter .dropdown-content span {
+  color: black;
+  padding: 12px 16px;
+  display: block;
+}
+.filter .dropdown-content span:hover {
+  background-color: #efefef;
+}
+.filter .dropdown-content .active {
+  color: var(--primary-color);
+  font-weight: bold;
+}
+.filter .showDrop {
+  display: block;
+}
+
+main.index {
+  margin: 96px auto 160px auto;
+  max-width: 1000px;
+}
+main.index .grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(5, 1fr);
+  width: 100%;
+}
+main.index .grid img {
+  -o-object-fit: cover;
+     object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: white;
+  box-shadow: 0px 8px 18px 4px rgba(207, 114, 47, 0.2);
+  aspect-ratio: 1;
+  position: relative;
+  bottom: 0;
+  transition: all 0.2s;
+  filter: grayscale(1);
+}
+main.index .grid img:hover {
+  box-shadow: 0px 8px 18px 4px rgba(207, 114, 47, 0.4);
+  cursor: pointer;
+  position: relative;
+  bottom: 4px;
+  transition: all 0.2s;
+}
+
+footer {
+  background-color: var(--darkPrimary-color);
+  color: white;
+  padding: 32px 24px 160px 24px;
+  text-align: center;
+}
+
+h3.category {
+  color: var(--grey900);
+  margin-bottom: 16px;
+  font-size: 1rem;
+}
+
+main.brand {
+  display: flex;
+  margin: 100px auto 160px auto;
+  gap: 24px;
+  max-width: 1000px;
+}
+main.brand section.brandSec {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 320px;
+}
+main.brand section.brandSec .brandLogo {
+  position: relative;
+  background-color: white;
+  border-radius: 16px;
+  width: 100%;
+  overflow: hidden;
+}
+main.brand section.brandSec .brandLogo img {
+  width: 100%;
+}
+main.brand section.brandSec .brandLogo span {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+main.brand section.brandSec .brandDesc {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 2 1 140px;
+}
+main.brand section.brandSec .brandDesc h1 {
+  color: rgb(54, 54, 54);
+}
+main.brand section.brandSec .brandDesc p {
+  font-size: 0.75rem;
+}
+main.brand section.menuGroup {
+  -moz-column-width: 280px;
+       column-width: 280px;
+  gap: 16px;
+}
+main.brand section.menuGroup section.menu {
+  padding: 24px 24px 16px 24px;
+  border-radius: 16px;
+  background-color: white;
+  box-shadow: 0px 8px 18px 4px rgba(207, 114, 47, 0.2);
+  display: inline-block;
+  margin-bottom: 16px;
+  width: 100%;
+}
+main.brand section.menuGroup section.menu ul.menuList {
+  list-style-type: none;
+}
+main.brand section.menuGroup section.menu ul.menuList li {
+  display: flex;
+  border-bottom: 1px solid lightgrey;
+  justify-content: space-between;
+  padding: 12px 8px;
+}
+main.brand section.menuGroup section.menu ul.menuList li:last-child {
+  border: none;
+}
+main.brand section.menuGroup section.menu ul.menuList li:hover {
+  background-color: var(--lightSecondary-color);
+  cursor: pointer;
+}
+main.brand section.menuGroup section.menu ul.menuList li div.itemL {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+main.brand section.menuGroup section.menu ul.menuList li div.itemL h6 {
+  font-size: 1rem;
+  font-weight: 400;
+}
+main.brand section.menuGroup section.menu ul.menuList li div.itemL .material-symbols-rounded.thumb {
+  color: var(--darkSecondary-color);
+  font-size: 16px;
+}
+main.brand section.menuGroup section.menu ul.menuList li div.itemR {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+main.brand section.menuGroup section.menu ul.menuList li div.itemR span {
+  color: var(--grey400);
+}
+main.brand section.menuGroup section.menu ul.menuList li div.itemR .price {
+  font-size: 14px;
+  color: var(--grey700);
+}
+main.brand section.menuGroup section.menu ul.menuList li div.itemR .average {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 36px;
+}
+main.brand section.menuGroup section.menu ul.menuList li div.itemR .average .star,
+main.brand section.menuGroup section.menu ul.menuList li div.itemR .average #averageScore {
+  color: var(--secondary-color);
+}
+main.brand section.menuGroup section.menu ul.menuList li div.itemR .average .star {
+  font-size: 16px;
+}
+
+.snackbar {
+  padding: 20px;
+  background-color: var(--grey900);
+  color: white;
+  width: 360px;
+  border-radius: 4px;
+  font-size: 1rem;
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  margin-left: -180px;
+  display: none;
+  transition: display 1s ease-in-out;
+}
+
+#editDialog,
+#favDialog {
+  background-color: white;
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0px 8px 18px 4px rgba(207, 114, 47, 0.2);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 1000px;
+}
+#editDialog::backdrop,
+#favDialog::backdrop {
+  background: rgba(0, 0, 0, 0.2);
+}
+#editDialog header,
+#favDialog header {
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: white;
+  text-align: end;
+  padding: 16px 24px;
+}
+#editDialog header .close,
+#favDialog header .close {
+  color: var(--grey900);
+  cursor: pointer;
+}
+#editDialog form,
+#favDialog form {
+  padding: 8px 24px 24px 24px;
+}
+#editDialog form .form,
+#favDialog form .form {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: 24px;
+}
+#editDialog .upload,
+#favDialog .upload {
+  background-color: var(--grey100);
+  border: 1px dashed var(--grey400);
+  border-radius: 8px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+#editDialog .upload #file-uploader,
+#favDialog .upload #file-uploader {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 5;
+}
+#editDialog .upload span,
+#editDialog .upload p,
+#favDialog .upload span,
+#favDialog .upload p {
+  color: var(--grey400);
+}
+#editDialog .upload span,
+#favDialog .upload span {
+  font-size: 40px;
+}
+#editDialog #preview-image,
+#favDialog #preview-image {
+  position: absolute;
+  width: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+#editDialog .diaInput,
+#favDialog .diaInput {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+#editDialog .diaInput p,
+#favDialog .diaInput p {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+#editDialog .diaInput p label,
+#favDialog .diaInput p label {
+  font-size: 0.5rem;
+}
+#editDialog .diaInput p input,
+#editDialog .diaInput p select,
+#favDialog .diaInput p input,
+#favDialog .diaInput p select {
+  height: 40px;
+  border: 1px solid var(--grey400);
+  border-radius: 4px;
+  padding: 0 8px;
+}
+#editDialog .diaInput p input:disabled,
+#editDialog .diaInput p select:disabled,
+#favDialog .diaInput p input:disabled,
+#favDialog .diaInput p select:disabled {
+  background-color: #f1f1f1;
+  border: none;
+}
+#editDialog .diaInput .inpRadio,
+#editDialog .diaInput .inpRating,
+#editDialog .diaInput .inpArea,
+#favDialog .diaInput .inpRadio,
+#favDialog .diaInput .inpRating,
+#favDialog .diaInput .inpArea {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  grid-column: span 2;
+}
+#editDialog .diaInput .inpRadio p,
+#editDialog .diaInput .inpRating p,
+#editDialog .diaInput .inpArea p,
+#favDialog .diaInput .inpRadio p,
+#favDialog .diaInput .inpRating p,
+#favDialog .diaInput .inpArea p {
+  font-size: 0.5rem;
+  padding: 0;
+}
+#editDialog .diaInput .inpRadio textarea,
+#editDialog .diaInput .inpRating textarea,
+#editDialog .diaInput .inpArea textarea,
+#favDialog .diaInput .inpRadio textarea,
+#favDialog .diaInput .inpRating textarea,
+#favDialog .diaInput .inpArea textarea {
+  border: 1px solid var(--grey400);
+  resize: none;
+  border-radius: 4px;
+  padding: 8px;
+}
+#editDialog .diaInput .inpRadio .radioGroup,
+#editDialog .diaInput .inpRating .radioGroup,
+#editDialog .diaInput .inpArea .radioGroup,
+#favDialog .diaInput .inpRadio .radioGroup,
+#favDialog .diaInput .inpRating .radioGroup,
+#favDialog .diaInput .inpArea .radioGroup {
+  display: flex;
+  gap: 8px;
+}
+#editDialog .diaInput .inpRadio .radioGroup p,
+#editDialog .diaInput .inpRating .radioGroup p,
+#editDialog .diaInput .inpArea .radioGroup p,
+#favDialog .diaInput .inpRadio .radioGroup p,
+#favDialog .diaInput .inpRating .radioGroup p,
+#favDialog .diaInput .inpArea .radioGroup p {
+  position: relative;
+  padding: 0;
+  width: 64px;
+  text-align: center;
+}
+#editDialog .diaInput .inpRadio .radioGroup p label,
+#editDialog .diaInput .inpRating .radioGroup p label,
+#editDialog .diaInput .inpArea .radioGroup p label,
+#favDialog .diaInput .inpRadio .radioGroup p label,
+#favDialog .diaInput .inpRating .radioGroup p label,
+#favDialog .diaInput .inpArea .radioGroup p label {
+  position: absolute;
+  display: inline-block;
+  text-align: center;
+  top: 25%;
+  color: var(--grey700);
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  white-space: nowrap;
+}
+#editDialog .diaInput .inpRadio .radioGroup p input:checked + label,
+#editDialog .diaInput .inpRating .radioGroup p input:checked + label,
+#editDialog .diaInput .inpArea .radioGroup p input:checked + label,
+#favDialog .diaInput .inpRadio .radioGroup p input:checked + label,
+#favDialog .diaInput .inpRating .radioGroup p input:checked + label,
+#favDialog .diaInput .inpArea .radioGroup p input:checked + label {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+#editDialog .diaInput .inpRadio .radioGroup p input:checked,
+#editDialog .diaInput .inpRating .radioGroup p input:checked,
+#editDialog .diaInput .inpArea .radioGroup p input:checked,
+#favDialog .diaInput .inpRadio .radioGroup p input:checked,
+#favDialog .diaInput .inpRating .radioGroup p input:checked,
+#favDialog .diaInput .inpArea .radioGroup p input:checked {
+  border: 2px solid var(--primary-color);
+}
+#editDialog .diaInput .inpRadio .radioGroup p input,
+#editDialog .diaInput .inpRating .radioGroup p input,
+#editDialog .diaInput .inpArea .radioGroup p input,
+#favDialog .diaInput .inpRadio .radioGroup p input,
+#favDialog .diaInput .inpRating .radioGroup p input,
+#favDialog .diaInput .inpArea .radioGroup p input {
+  border: 1px solid var(--grey700);
+  border-radius: 20px;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  cursor: pointer;
+}
+#editDialog .diaInput .inpRadio .star,
+#editDialog .diaInput .inpRating .star,
+#editDialog .diaInput .inpArea .star,
+#favDialog .diaInput .inpRadio .star,
+#favDialog .diaInput .inpRating .star,
+#favDialog .diaInput .inpArea .star {
+  font-size: 32px;
+  color: var(--grey400);
+  padding: 4px;
+  cursor: pointer;
+}
+#editDialog .diaInput .inpRadio .star.active, #editDialog .diaInput .inpRadio .star:hover,
+#editDialog .diaInput .inpRating .star.active,
+#editDialog .diaInput .inpRating .star:hover,
+#editDialog .diaInput .inpArea .star.active,
+#editDialog .diaInput .inpArea .star:hover,
+#favDialog .diaInput .inpRadio .star.active,
+#favDialog .diaInput .inpRadio .star:hover,
+#favDialog .diaInput .inpRating .star.active,
+#favDialog .diaInput .inpRating .star:hover,
+#favDialog .diaInput .inpArea .star.active,
+#favDialog .diaInput .inpArea .star:hover {
+  color: var(--primary-color);
+}
+#editDialog .btns,
+#favDialog .btns {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 32px;
+  align-items: center;
+}
+#editDialog .btns span,
+#favDialog .btns span {
+  padding: 8px;
+  font-size: 32px;
+  color: var(--grey700);
+  cursor: pointer;
+}
+#editDialog .btns span:hover,
+#favDialog .btns span:hover {
+  color: rgb(235, 87, 87);
+}
+#editDialog .btns button,
+#favDialog .btns button {
+  padding: 11px 16px;
+  width: 120px;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-left: auto;
+}
+#editDialog .btns button:hover,
+#favDialog .btns button:hover {
+  background-color: var(--darkPrimary-color);
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200vw;
+  height: 200vh;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  border: none;
+}
+
+#confirmationModal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 1000;
+  padding: 24px;
+  border: none;
+  transform: translate(-50%, -50%);
+  border-radius: 8px;
+  box-shadow: 0px 8px 18px 4px rgba(207, 114, 47, 0.2);
+}
+#confirmationModal .modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 400px;
+  text-align: center;
+}
+#confirmationModal .modal-content button {
+  border: none;
+  padding: 11px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+}
+#confirmationModal .modal-content #confirmDelete {
+  background-color: rgb(235, 87, 87);
+}
+#confirmationModal .modal-content #confirmDelete:hover {
+  background-color: rgb(206, 58, 58);
+}
+#confirmationModal .modal-content #cancelDelete,
+#confirmationModal .modal-content #cancelCloseButton {
+  background-color: var(--grey700);
+}
+#confirmationModal .modal-content #cancelDelete:hover,
+#confirmationModal .modal-content #cancelCloseButton:hover {
+  background-color: #363636;
+}
+#confirmationModal .modal-content #confirmCloseButton {
+  background-color: var(--primary-color);
+}
+#confirmationModal .modal-content #confirmCloseButton:hover {
+  background-color: #2f2691;
+}
+#confirmationModal .construction {
+  font-size: 40px;
+  padding: 16px;
+}
+#confirmationModal #closeBtn {
+  cursor: pointer;
+  background-color: var(--primary-color);
+}
+#confirmationModal #closeBtn:hover {
+  background-color: var(--darkPrimary-color);
+}
+
+main.record {
+  margin: 96px auto 160px auto;
+  max-width: 1000px;
+}
+main.record .recContent {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 24px;
+}
+main.record .recContent .dataSec {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 16px;
+  padding: 24px;
+  height: 600px;
+}
+main.record .recContent .dataSec .chart {
+  width: 100%;
+  height: 45%;
+}
+main.record .recContent .dataSec .chart hr {
+  border: 0.5px solid var(--grey200);
+  margin: 8px 0;
+}
+main.record .recContent .historyGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+main.record .recContent .historyGroup .history {
+  display: flex;
+  background-color: white;
+  border-radius: 16px;
+  width: 100%;
+  box-shadow: 0px 4px 12px 0px rgba(207, 114, 47, 0.2);
+  align-items: center;
+  padding: 16px 24px 16px 16px;
+  gap: 16px;
+}
+main.record .recContent .historyGroup .history:hover {
+  box-shadow: 0px 4px 8px 4px rgba(207, 114, 47, 0.2);
+  cursor: pointer;
+}
+main.record .recContent .historyGroup .history img {
+  height: 78px;
+  width: 78px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 16px;
+}
+main.record .recContent .historyGroup .history .recordInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+main.record .recContent .historyGroup .history .recordInfo .dateTime {
+  font-size: 0.75rem;
+  color: var(--grey400);
+}
+main.record .recContent .historyGroup .history .recordInfo h5 {
+  font-size: 1rem;
+  font-weight: normal;
+  color: var(--grey700);
+}
+main.record .recContent .historyGroup .history .recordInfo .drinkInfo {
+  display: flex;
+  align-items: center;
+  color: var(--grey900);
+  gap: 8px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  flex-wrap: wrap;
+}
+main.record .recContent .historyGroup .history .recordInfo .drinkInfo span {
+  word-break: keep-all;
+}
+main.record .recContent .historyGroup .history .recordInfo .rating {
+  display: flex;
+  align-items: center;
+  border: none;
+  color: var(--secondary-color);
+}
+main.record .recContent .historyGroup .history .recordInfo .rating span {
+  font-size: 20px;
+}
+
+@media screen and (max-width: 599px) {
+  nav {
+    padding: 0 24px;
+    height: 56px;
+  }
+  nav img {
+    width: 24px !important;
+  }
+  nav .tab {
+    margin-left: 24px;
+  }
+  nav .tab a {
+    height: 56px;
+  }
+  .banner {
+    height: 260px;
+  }
+  .banner .title {
+    width: 75%;
+    margin: 24px;
+    gap: 8px;
+  }
+  .banner .title h1 {
+    font-size: 2rem;
+  }
+  .banner .title p {
+    font-size: 0.875rem;
+  }
+  .banner img {
+    width: 380px;
+    bottom: -26px;
+  }
+  .filter .filterL {
+    gap: 8px;
+    overflow-x: scroll;
+  }
+  .filter input[type=month],
+  .filter #brand-list,
+  .filter .search input {
+    min-width: 144px;
+  }
+  .filter .sort {
+    min-width: 120px;
+    margin-left: 8px;
+  }
+  main.index {
+    margin: 40px 24px;
+  }
+  main.index .grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  main.brand {
+    margin: 88px 24px;
+    flex-direction: column;
+    gap: 40px;
+  }
+  main.brand section.brandSec {
+    flex-direction: row;
+    width: 100%;
+    padding: 0;
+  }
+  main.brand section.brandSec .brandLogo {
+    flex: 1 1 140px;
+  }
+  main.brand section.brandSec .brandDesc {
+    margin-top: 8px;
+    gap: 8px;
+    width: 100%;
+  }
+  main.brand section.brandSec .brandDesc p {
+    font-size: 0.75rem;
+  }
+  main.record {
+    margin: 88px 24px;
+  }
+  main.record .recContent {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  main.record .recContent .dataSec {
+    padding: 16px;
+    max-height: none;
+  }
+  main.record .recContent .historyGroup .history {
+    gap: 12px;
+  }
+  main.record .recContent .historyGroup .history img {
+    height: 64px;
+    width: 64px;
+  }
+  main.record .recContent .historyGroup .history .recordInfo .drinkInfo {
+    font-size: 1rem;
+  }
+  main.record .recContent .historyGroup .history .recordInfo .brandName {
+    font-size: 0.875rem;
+  }
+  #editDialog,
+  #favDialog {
+    min-width: 100%;
+    min-height: 100vh;
+    border-radius: 0;
+    top: 0;
+    left: 0;
+    transform: none;
+  }
+  #editDialog header,
+  #favDialog header {
+    padding: 12px 16px;
+  }
+  #editDialog form .form,
+  #favDialog form .form {
+    display: flex;
+    flex-direction: column;
+  }
+  #editDialog form .form .upload,
+  #favDialog form .form .upload {
+    height: 200px;
+  }
+  #editDialog form .form .upload #preview-image,
+  #favDialog form .form .upload #preview-image {
+    height: 100%;
+    -o-object-fit: contain;
+       object-fit: contain;
+  }
+  #editDialog form .form .upload p,
+  #favDialog form .form .upload p {
+    font-size: 0.75rem;
+  }
+  #confirmationModal {
+    transform: translate(-50%, -50%);
+  }
+  #confirmationModal .modal-content {
+    width: 256px;
+  }
+}/*# sourceMappingURL=style.css.map */

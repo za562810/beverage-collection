@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>迷客夏-Beverage Collection</title>
+    <link rel="icon" href="/img/logo.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+
+  <body>
+    <header>
+      <nav class="nav-brand">
+        <div class="leftGroup">
+          <div class="logo"><img src="/img/logo.svg" alt="" /></div>
+          <ul class="tab">
+            <li><a href="/index.html"> Brands </a></li>
+            <li><a href="/records.html"> Records </a></li>
+          </ul>
+        </div>
+        <span class="material-symbols-rounded member"> person </span>
+      </nav>
+    </header>
+
+    <main class="brand">
+      <section class="brandSec">
+        <div class="brandLogo">
+          <span class="material-symbols-rounded heart" onclick="fillIcon(this)">
+            favorite
+          </span>
+          <img src="./img/brands/04.png" alt="" />
+        </div>
+        <div class="brandDesc">
+          <h1>迷客夏 MilkSha</h1>
+          <p>
+            創立於2008年，我們堅持店內不販售奶精，全程以鮮乳來調製鮮奶茶。
+            我們的『鮮奶』不同於一般市售鮮奶，產地直送嚴選的超A級品質，成分無調整，口感天然滑順。
+          </p>
+        </div>
+      </section>
+
+      <section class="menuGroup"></section>
+    </main>
+
+    <dialog id="favDialog">
+      <header>
+        <span class="material-symbols-rounded cancel" value="cancel">
+          close
+        </span>
+      </header>
+
+      <form id="myForm">
+        <div class="form">
+          <div class="upload">
+            <input
+              type="file"
+              class="file"
+              id="file-uploader"
+              data-target="file-uploader"
+              accept="image/png, image/jpeg"
+              multiple="multiple"
+            />
+            <img id="preview-image" src="" style="display: none" />
+            <span class="material-symbols-rounded"> cloud_upload </span>
+            <p>Drag & Drop here<br />or<br />Click to Upload</p>
+          </div>
+
+          <div class="diaInput">
+            <p>
+              <label for="inpBrand">Brand</label>
+              <input
+                type="text"
+                id="inpBrand"
+                value="迷客夏"
+                name="inpBrand"
+                disabled
+              />
+            </p>
+            <p>
+              <label for="inpItem">Item</label>
+              <input
+                type="text"
+                id="inpItem"
+                value="迷客夏"
+                name="inpItem"
+                disabled
+              />
+            </p>
+            <p>
+              <label for="inpSize">Size</label>
+              <select id="inpSize" name="inpSize">
+                <option value="l">L</option>
+                <option value="s">S</option>
+              </select>
+            </p>
+            <p>
+              <label for="inpPrice">Price</label>
+              <input type="text" id="inpPrice" name="inpPrice" disabled />
+            </p>
+            <p>
+              <label for="inpDate">Date</label>
+              <input type="date" id="inpDate" name="inpDate" />
+            </p>
+            <p>
+              <label for="inpTime">Time</label>
+              <input type="time" id="inpTime" name="inpTime" />
+            </p>
+
+            <div class="inpRadio">
+              <p>Sugar</p>
+              <div class="radioGroup">
+                <p>
+                  <input
+                    type="radio"
+                    name="sugar"
+                    id="inpSugar0"
+                    value="無糖"
+                    checked
+                  />
+                  <label for="inpSugar0">無糖</label>
+                </p>
+                <p>
+                  <input
+                    type="radio"
+                    name="sugar"
+                    id="inpSugar10"
+                    value="一分糖"
+                  />
+                  <label for="inpSugar10">一分糖</label>
+                </p>
+                <p>
+                  <input
+                    type="radio"
+                    name="sugar"
+                    id="inpSugar30"
+                    value="微糖"
+                  />
+                  <label for="inpSugar30">微糖</label>
+                </p>
+                <p>
+                  <input
+                    type="radio"
+                    name="sugar"
+                    id="inpSugar50"
+                    value="半糖"
+                  />
+                  <label for="inpSugar50">半糖</label>
+                </p>
+                <p>
+                  <input
+                    type="radio"
+                    name="sugar"
+                    id="inpSugar70"
+                    value="少糖"
+                  />
+                  <label for="inpSugar70">少糖</label>
+                </p>
+                <p>
+                  <input
+                    type="radio"
+                    name="sugar"
+                    id="inpSugar100"
+                    value="全糖"
+                  />
+                  <label for="inpSugar100">全糖</label>
+                </p>
+              </div>
+            </div>
+            <div class="inpRadio">
+              <p>Ice</p>
+              <div class="radioGroup">
+                <p>
+                  <input
+                    type="radio"
+                    name="ice"
+                    id="inpIce0"
+                    value="常溫"
+                    checked
+                  />
+                  <label for="inpIce0">常溫</label>
+                </p>
+                <p>
+                  <input type="radio" name="ice" id="inpIce10" value="去冰" />
+                  <label for="inpIce10">去冰</label>
+                </p>
+                <p>
+                  <input type="radio" name="ice" id="inpIce30" value="微冰" />
+                  <label for="inpIce30">微冰</label>
+                </p>
+                <p>
+                  <input type="radio" name="ice" id="inpIce50" value="半冰" />
+                  <label for="inpIce50">半冰</label>
+                </p>
+                <p>
+                  <input type="radio" name="ice" id="inpIce70" value="少冰" />
+                  <label for="inpIce70">少冰</label>
+                </p>
+                <p>
+                  <input type="radio" name="ice" id="inpIce100" value="正常" />
+                  <label for="inpIce100">正常</label>
+                </p>
+              </div>
+            </div>
+
+            <div class="inpRating">
+              <p>Rating</p>
+              <div class="rateGroup">
+                <span class="material-symbols-rounded star" data-rating="1">
+                  star
+                </span>
+                <span class="material-symbols-rounded star" data-rating="2">
+                  star
+                </span>
+                <span class="material-symbols-rounded star" data-rating="3">
+                  star
+                </span>
+                <span class="material-symbols-rounded star" data-rating="4">
+                  star
+                </span>
+                <span class="material-symbols-rounded star" data-rating="5">
+                  star
+                </span>
+              </div>
+              <input type="hidden" id="rating" name="rating" value="0" />
+            </div>
+            <div class="inpArea">
+              <p>Note</p>
+              <textarea
+                name="inpNote"
+                id="inpNote"
+                cols="30"
+                rows="3"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="btns">
+          <button id="confirmBtn" value="default" type="submit">SAVE</button>
+        </div>
+      </form>
+
+      <!-- <dialog id="confirmationModal">
+        <div class="modal-content">
+          <h3>確認關閉</h3>
+          <p>您已經編輯了一些資料，確定要關閉嗎？</p>
+          <button id="confirmCloseButton">確定</button>
+          <button id="cancelCloseButton">取消</button>
+        </div>
+      </dialog> -->
+    </dialog>
+
+    <div class="snackbar">Submitted successfully</div>
+    <div class="snackbar marked">Marked as favorite</div>
+    <div class="snackbar unmarked">Remove from favorites</div>
+
+    <script src="/brand.js"></script>
+  </body>
+</html>

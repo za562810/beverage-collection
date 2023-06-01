@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Personal Record-Beverage Collection</title>
+    <link rel="icon" href="/img/logo.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <nav class="nav-brand">
+        <div class="leftGroup">
+          <div class="logo"><img src="/img/logo.svg" alt="" /></div>
+          <ul class="tab">
+            <li><a href="/index.html"> Brands </a></li>
+            <li><a href="#" class="active"> Records </a></li>
+          </ul>
+        </div>
+        <span class="material-symbols-rounded member"> person </span>
+      </nav>
+    </header>
+
+    <main class="record">
+      <section class="filter">
+        <div class="filterL">
+          <input type="month" id="monthePicker" />
+          <select name="" id="brand-list" onchange="filterBrand(this)">
+            <!-- <option value="龜記">龜記</option> -->
+          </select>
+        </div>
+
+        <div class="sort">
+          <span class="material-symbols-rounded"> tune </span>
+          <p id="sortText">Newest</p>
+          <div id="myDropdown" class="dropdown-content">
+            <span id="sortByNew" class="active">Newest</span>
+            <span id="sortByOld">Oldest</span>
+            <span id="sortByHigh">Highest Rated</span>
+            <span id="sortByLow">Lowest Rated</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="recContent">
+        <section class="dataSec">
+          <h3 class="category">Statistic</h3>
+          <div class="chart">
+            <canvas id="brandChart"></canvas>
+            <hr />
+            <canvas id="itemChart"></canvas>
+          </div>
+        </section>
+
+        <section class="historyGroup">
+          <!-- <div class="history">
+            <img src="./img/brands/01.png" alt="" />
+            <div class="recordInfo">
+              <div class="dateTime">
+                <span class="dateDis">2023.04.27</span>
+                <span class="timeDis">11:24</span>
+              </div>
+              <div class="drinkInfo">
+                <span>決明大麥</span>
+                <span>|</span>
+                <span>無糖去冰</span>
+                <div class="rating">
+                  <span>5</span>
+                  <span class="material-symbols-rounded"> star </span>
+                </div>
+              </div>
+              <h5 class="brandName">迷客夏</h5>
+            </div>
+          </div> -->
+        </section>
+      </section>
+    </main>
+
+    <dialog id="editDialog">
+      <header>
+        <span class="material-symbols-rounded cancel" value="cancel">
+          close
+        </span>
+      </header>
+
+      <form id="myForm">
+        <div class="form"></div>
+
+        <div class="btns">
+          <span class="material-symbols-rounded delete"> delete </span>
+          <button id="confirmBtn" value="default" type="submit">SAVE</button>
+        </div>
+      </form>
+
+      <dialog class="overlay" style="display: none"></dialog>
+      <dialog id="confirmationModal" class="modal">
+        <div class="modal-content">
+          <h3>Delete the record?</h3>
+          <p>You will not be able to recover it.</p>
+          <button id="confirmDelete">DELETE</button>
+          <button id="cancelDelete">CANCEL</button>
+        </div>
+      </dialog>
+    </dialog>
+
+    <div class="snackbar">Save completed!</div>
+
+    <script src="
+      https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+    <script src="record.js"></script>
+  </body>
+</html>

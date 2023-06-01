@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beverage Collection</title>
+    <link rel="icon" href="/img/logo.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="leftGroup">
+          <div class="logo"><img src="/img/logo.svg" /></div>
+          <ul class="tab">
+            <li><a href="#" class="active"> Brands </a></li>
+            <li><a href="/records.html"> Records </a></li>
+          </ul>
+        </div>
+        <span class="material-symbols-rounded member"> person </span>
+      </nav>
+    </header>
+
+    <section class="banner">
+      <div class="title animate__animated animate__bounceInLeft">
+        <h1>What did you drink today?</h1>
+        <p>
+          A platform for beverage enthusiasts to curate their beverage
+          collection.
+        </p>
+      </div>
+      <div><img src="/img/banner.png" /></div>
+    </section>
+
+    <dialog class="overlay" style="display: none"></dialog>
+    <dialog id="confirmationModal" class="modal">
+      <div class="modal-content">
+        <span class="material-symbols-rounded construction"> handyman </span>
+        <h3>Under Construction</h3>
+        <p>Coming Soon</p>
+        <button id="closeBtn">CLOSE</button>
+      </div>
+    </dialog>
+
+    <main class="index">
+      <section class="filter">
+        <div class="search">
+          <input placeholder="Search" type="text" id="search" /><span
+            class="material-symbols-rounded magnifier"
+          >
+            search
+          </span>
+        </div>
+        <div class="sort">
+          <span class="material-symbols-rounded"> tune </span>
+          <p id="sortText">Name</p>
+        </div>
+        <div id="myDropdown" class="dropdown-content">
+          <span id="sortByFavorite">Favorite</span>
+          <span id="sortByName" class="active">Name</span>
+        </div>
+        <!-- </div> -->
+      </section>
+
+      <div class="grid">
+        <!-- <a href="/brand.html"
+          ><img class="brandList" src="./img/brands/05.png" alt="50嵐"
+        /></a> -->
+      </div>
+    </main>
+
+    <footer>
+      <p>© 2023 by Joanne Wang | UX Designer</p>
+    </footer>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
