@@ -102,8 +102,6 @@ const brands = [
   },
 ];
 
-const historys = JSON.parse(localStorage.getItem("record")) || []; //取得record
-
 //search
 function brandFilter(targetBrand, all = brands) {
   return all.filter((e) => {
@@ -111,30 +109,99 @@ function brandFilter(targetBrand, all = brands) {
   });
 }
 
-function sortByName() {
-  brands.sort((a, b) => a.name.localeCompare(b.name, "zh-Hant"));
-}
-
 function renderBrands(targetHTML) {
-  let brandList = document.querySelector(".grid");
-  brandList.innerHTML = targetHTML;
+  document.querySelector(".grid").innerHTML = targetHTML;
 }
 
+//產生品牌logo
 function generateBrandHTML(targetBrands) {
+  const historys = JSON.parse(localStorage.getItem("record")) || [];
   return targetBrands
     .map((brands) => {
+      //檢查是否有紀錄
       const isMatched = historys.some((e) => e.brand === brands.name);
       const logoStyle = isMatched ? 'style="filter: grayscale(0);" ' : "";
-
       return `<a href="${brands.url}" data-name="${brands.name}"><img class="brandList" src="${brands.logo}" alt="${brands.name}" ${logoStyle} /></a>`;
     })
     .join("");
 }
 
-//產生品牌logo
 sortByName(); //預設以name sort
 renderBrands(generateBrandHTML(brands));
 
+//
+//搜尋enter或是點擊icon
+document.querySelector(".search").addEventListener("keydown", (e) => {
+  if (e.key == "Enter") {
+    renderBrands(generateBrandHTML(brandFilter(e.target.value)));
+  }
+});
+document.querySelector(".magnifier").addEventListener("click", (e) => {
+  renderBrands(
+    generateBrandHTML(
+      brandFilter(document.querySelector(".search input").value)
+    )
+  );
+});
+
+//
+//sort
+const sortBtn = document.querySelector(".sort");
+const dropDown = document.querySelector("#myDropdown");
+
+function openSort() {
+  dropDown.classList.toggle("showDrop");
+}
+sortBtn.addEventListener("click", openSort);
+
+//點擊空白處關閉sort
+document.addEventListener("click", (e) => {
+  if (e.target === sortBtn || sortBtn.contains(e.target)) {
+    return;
+  }
+  dropDown.classList.remove("showDrop");
+});
+
+//中文姓名排序
+function sortByName() {
+  brands.sort((a, b) => a.name.localeCompare(b.name, "zh-Hant"));
+  renderBrands(generateBrandHTML(brands));
+  const sortText = document.querySelector("#sortText");
+  sortText.innerHTML = "Name";
+  const allSort = document.querySelectorAll("#myDropdown span");
+  allSort.forEach((sort) => {
+    sort.classList.remove("active");
+  });
+  document.querySelector("#sortByName").classList.add("active");
+}
+//favorite排序
+function sortByBrand() {
+  const saved = JSON.parse(localStorage.getItem("save")) || [];
+  const saved2 = JSON.parse(localStorage.getItem("save2")) || [];
+  brands.sort((a, b) => {
+    if (a.name === saved || a.name === saved2) {
+      return -1; // 將包含 'saved' 的物件排在前面
+    } else if (b.name === saved) {
+      return 1;
+    } else {
+      return 0; // 其他物件的順序不變
+    }
+  });
+  renderBrands(generateBrandHTML(brands));
+  const sortText = document.querySelector("#sortText");
+  sortText.innerHTML = "Favorite";
+  const allSort = document.querySelectorAll("#myDropdown span");
+  allSort.forEach((sort) => {
+    sort.classList.remove("active");
+  });
+  document.querySelector("#sortByFavorite").classList.add("active");
+}
+
+document.querySelector("#sortByName").onclick = sortByName;
+document.querySelector("#sortByFavorite").onclick = sortByBrand;
+
+//
+//產生施工中 modal
 const logoDiv = document.querySelectorAll("a");
 const ConstructionModal = document.querySelector("#confirmationModal");
 const closeBtn = ConstructionModal.querySelector("#closeBtn");
@@ -156,75 +223,4 @@ closeBtn.addEventListener("click", () => {
   ConstructionModal.style.display = "none";
   overlay.style.display = "none";
   document.body.style.overflow = "auto";
-});
-
-//搜尋enter或是點擊icon
-document.querySelector(".search").addEventListener("keydown", (e) => {
-  if (e.key == "Enter") {
-    renderBrands(generateBrandHTML(brandFilter(e.target.value)));
-  }
-});
-document.querySelector(".magnifier").addEventListener("click", (e) => {
-  renderBrands(
-    generateBrandHTML(
-      brandFilter(document.querySelector(".search input").value)
-    )
-  );
-});
-
-//
-//sort
-const sortBtn = document.querySelector(".sort");
-const dropDown = document.querySelector("#myDropdown");
-sortBtn.addEventListener("click", (e) => {
-  dropDown.classList.toggle("showDrop");
-});
-
-//點擊空白處關閉sort
-document.addEventListener("click", (e) => {
-  if (e.target === sortBtn || sortBtn.contains(e.target)) {
-    return;
-  }
-  dropDown.classList.remove("showDrop");
-});
-
-const sortFavorite = document.querySelector("#sortByFavorite");
-const sortName = document.querySelector("#sortByName");
-const saved = JSON.parse(localStorage.getItem("save")) || [];
-const saved2 = JSON.parse(localStorage.getItem("save2")) || [];
-const allSort = dropDown.querySelectorAll("span");
-
-sortName.addEventListener("click", () => {
-  sortByName();
-  renderBrands(generateBrandHTML(brands));
-  const sortText = document.querySelector("#sortText");
-  sortText.innerHTML = "Name";
-  allSort.forEach((sort) => {
-    sort.classList.remove("active");
-  });
-  sortName.classList.add("active");
-});
-
-//favorite排序
-function sortByBrand() {
-  brands.sort((a, b) => {
-    if (a.name === saved || a.name === saved2) {
-      return -1; // 將包含 'saved' 的物件排在前面
-    } else if (b.name === saved) {
-      return 1;
-    } else {
-      return 0; // 其他物件的順序不變
-    }
-  });
-}
-
-sortFavorite.addEventListener("click", () => {
-  sortByBrand();
-  renderBrands(generateBrandHTML(brands));
-  const sortText = document.querySelector("#sortText");
-  sortText.innerHTML = "Favorite";
-  allSort.forEach((sort) => {
-    sort.classList.remove("active");
-  });
-  sortFavorite.classList.add("active");
 });
