@@ -141,40 +141,30 @@ function renderHistoryList(historys) {
   });
 }
 
-//產生初始historylist，預設篩選當月、排序日期最新
-renderHistoryList(
-  JSON.parse(localStorage.getItem("record"))
-    .filter(
-      (e) =>
-        e.date.slice(0, 7) ===
-        document.querySelector("#monthPicker").value.slice(0, 7)
-    )
-    .sort((a, b) => {
-      if (b.date > a.date) {
-        return 1; // b.date 晚於 a.date，b 應排在 a 之後
-      } else if (b.date < a.date) {
-        return -1; // b.date 早於 a.date，b 應排在 a 之前
-      } else {
-        // 日期相同，比較時間
-        if (b.time > a.time) {
-          return 1; // b.time 晚於 a.time，b 應排在 a 之後
-        } else if (b.time < a.time) {
-          return -1; // b.time 早於 a.time，b 應排在 a 之前
-        } else {
-          return 0; // 日期和時間相同，保持原有順序
-        }
-      }
-    })
-);
-
 //
-//篩選日期
-function filterMonth() {
-  const firstSixChars = this.value.slice(0, 7);
+//用物件存取目前所有篩選與排序的狀態
+//產生初始historylist，預設篩選當月、排序日期最新
+let filterState = {
+  month: document.querySelector("#monthPicker").value,
+  brand: null,
+  sort: "newest",
+};
+applyFiltersAndSort();
+
+function applyFiltersAndSort() {
   let historys = JSON.parse(localStorage.getItem("record")) || [];
-  historys = historys
-    .filter((e) => e.date.slice(0, 7) === firstSixChars)
-    .sort((a, b) => {
+  if (filterState.month) {
+    historys = historys.filter((e) => e.date.slice(0, 7) == filterState.month);
+  }
+  if (filterState.brand && filterState.brand !== "All brands") {
+    historys = historys.filter((e) => e.brand === filterState.brand);
+  }
+  if (filterState.sort === "highest") {
+    historys.sort((a, b) => b.rating - a.rating);
+  } else if (filterState.sort === "lowest") {
+    historys.sort((a, b) => a.rating - b.rating);
+  } else if (filterState.sort === "newest") {
+    historys.sort((a, b) => {
       if (b.date > a.date) {
         return 1;
       } else if (b.date < a.date) {
@@ -189,22 +179,41 @@ function filterMonth() {
         }
       }
     });
-  renderHistoryList(historys);
-}
-
-//
-//篩選品牌
-function filterBrand(selectList) {
-  let historys = JSON.parse(localStorage.getItem("record")) || [];
-  const selectedIndex = selectList.selectedIndex;
-  const selectedBrand = selectList.options[selectedIndex].value;
-  if (selectedBrand !== "All brands") {
-    historys = historys.filter((e) => e.brand === selectedBrand);
+  } else if (filterState.sort === "oldest") {
+    historys.sort((a, b) => {
+      if (b.date > a.date) {
+        return 1;
+      } else if (b.date < a.date) {
+        return -1;
+      } else {
+        if (b.time > a.time) {
+          return 1;
+        } else if (b.time < a.time) {
+          return -1;
+        } else {
+          return 0;
+        }
+      }
+    });
+    historys.reverse();
   }
   renderHistoryList(historys);
 }
 
-//
+//篩選日期
+function filterMonth(picker) {
+  filterState.month = picker.value;
+  applyFiltersAndSort();
+}
+
+//篩選品牌
+function filterBrand(selectList) {
+  const selectedIndex = selectList.selectedIndex;
+  const selectedBrand = selectList.options[selectedIndex].value;
+  filterState.brand = selectedBrand;
+  applyFiltersAndSort();
+}
+
 // sort
 const dropDown = document.querySelector("#myDropdown");
 const sortBtn = document.querySelector(".sort");
@@ -228,9 +237,8 @@ const allSort = document.querySelectorAll("#myDropdown span");
 
 //rating評分排序
 sortHigh.onclick = (e) => {
-  let historys = JSON.parse(localStorage.getItem("record"));
-  historys.sort((a, b) => b.rating - a.rating);
-  renderHistoryList(historys);
+  filterState.sort = "highest";
+  applyFiltersAndSort();
 
   const sortText = document.querySelector("#sortText");
   sortText.innerHTML = "Highest";
@@ -241,9 +249,8 @@ sortHigh.onclick = (e) => {
 };
 
 sortLow.onclick = (e) => {
-  let historys = JSON.parse(localStorage.getItem("record"));
-  historys.sort((a, b) => a.rating - b.rating);
-  renderHistoryList(historys);
+  filterState.sort = "lowest";
+  applyFiltersAndSort();
 
   const sortText = document.querySelector("#sortText");
   sortText.innerHTML = "Lowest";
@@ -255,23 +262,9 @@ sortLow.onclick = (e) => {
 
 //日期排序
 sortNew.onclick = (e) => {
-  const historys = JSON.parse(localStorage.getItem("record"));
-  historys.sort((a, b) => {
-    if (b.date > a.date) {
-      return 1;
-    } else if (b.date < a.date) {
-      return -1;
-    } else {
-      if (b.time > a.time) {
-        return 1;
-      } else if (b.time < a.time) {
-        return -1;
-      } else {
-        return 0;
-      }
-    }
-  });
-  renderHistoryList(historys);
+  filterState.sort = "newest";
+  applyFiltersAndSort();
+
   const sortText = document.querySelector("#sortText");
   sortText.innerHTML = "Newest";
   allSort.forEach((sort) => {
@@ -281,24 +274,9 @@ sortNew.onclick = (e) => {
 };
 
 sortOld.onclick = (e) => {
-  const historys = JSON.parse(localStorage.getItem("record"));
-  historys.sort((a, b) => {
-    if (b.date > a.date) {
-      return 1;
-    } else if (b.date < a.date) {
-      return -1;
-    } else {
-      if (b.time > a.time) {
-        return 1;
-      } else if (b.time < a.time) {
-        return -1;
-      } else {
-        return 0;
-      }
-    }
-  });
-  historys.reverse();
-  renderHistoryList(historys);
+  filterState.sort = "oldest";
+  applyFiltersAndSort();
+
   const sortText = document.querySelector("#sortText");
   sortText.innerHTML = "Oldest";
   allSort.forEach((sort) => {
