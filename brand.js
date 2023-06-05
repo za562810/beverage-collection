@@ -3,7 +3,6 @@ const items1 = [
     name: "冰糖洛神梅",
     price: "45",
     thumb: 0,
-    // score: score;
   },
   {
     name: "香柚綠茶",
@@ -289,7 +288,7 @@ const itemGroup = [
   },
 ];
 
-//檢查是否有收藏該品牌
+//進來就檢查是否有收藏該品牌
 window.onload = function checkSave() {
   const save = JSON.parse(localStorage.getItem("save")) || [];
   if (save === document.querySelector("h1").innerHTML) {
@@ -298,7 +297,7 @@ window.onload = function checkSave() {
 };
 
 //
-//產生平均分數
+//產生平均分數存入item1-6物件
 function generateAverageScore() {
   const historys = JSON.parse(localStorage.getItem("record")) || [];
   //取出item與rating存進新陣列
@@ -309,18 +308,22 @@ function generateAverageScore() {
     };
   });
 
+  //將陣列針對item累加總分跟次數
   const result = scorePair.reduce((accumulator, obj) => {
+    //如果目前沒有該item，則加上
     if (!accumulator[obj.item]) {
       accumulator[obj.item] = { sum: 0, count: 0 };
     }
-    accumulator[obj.item].sum += parseInt(obj.rating); // 將字串轉換為整數
+    accumulator[obj.item].sum += parseInt(obj.rating);
     accumulator[obj.item].count++;
     return accumulator;
   }, {});
+
   const averageRatings = {};
   for (const item in result) {
-    const average = (result[item].sum / result[item].count).toFixed(1); // 保留一位小數
-    averageRatings[item] = parseFloat(average);
+    averageRatings[item] = parseFloat(
+      (result[item].sum / result[item].count).toFixed(1)
+    );
   }
   for (const group of itemGroup) {
     for (const item of group.group) {
@@ -333,53 +336,54 @@ generateAverageScore();
 //
 //產生menuGroup
 let menuGroup = document.querySelector(".menuGroup");
-
 function generateMGHTML(target) {
   return target
     .map((itemGroup) => {
       return `<section class="menu"><h3 class="category">${itemGroup.title}</h3>
       <ul class="menuList"></ul></section>`;
     })
-    .join("");
+    .join(""); //將新陣列轉為字串
 }
 menuGroup.innerHTML = generateMGHTML(itemGroup);
 
 //產生items
-function generateItemHTML(target) {
-  return target
-    .map((item) => {
-      const thumbHTML =
-        item.thumb === 1
-          ? '<span class="material-symbols-rounded thumb"> thumb_up </span>'
-          : "";
-      return `
-        <li class="updateDetails">
-          <div class="itemL">
-            <h6>${item.name}</h6>
-            ${thumbHTML}
-          </div>
+function generateItems() {
+  function generateItemHTML(target) {
+    return target
+      .map((item) => {
+        const thumbHTML =
+          item.thumb === 1
+            ? '<span class="material-symbols-rounded thumb"> thumb_up </span>'
+            : "";
+        return `
+          <li class="updateDetails">
+            <div class="itemL">
+              <h6>${item.name}</h6>
+              ${thumbHTML}
+            </div>
+  
+            <div class="itemR">
+              <span class="price">${item.price}</span>
+              <span>|</span>
+              <div class="average">
+              <span class="material-symbols-rounded star">
+                star</span>
+                <span id="averageScore">${item.score}</span>
+            </div>
+            </div>
+          </li>`;
+      })
+      .join("");
+  }
+  let menuLists = document.querySelectorAll(".menuList");
 
-          <div class="itemR">
-            <span class="price">${item.price}</span>
-            <span>|</span>
-            <div class="average">
-            <span class="material-symbols-rounded star">
-              star</span>
-              <span id="averageScore">${item.score}</span>
-          </div>
-          </div>
-        </li>`;
-    })
-    .join("");
+  //迴圈將產生的HTML放入group
+  itemGroup.forEach((group, index) => {
+    let menuList = menuLists[index];
+    menuList.innerHTML = generateItemHTML(group.group);
+  });
 }
-
-let menuLists = document.querySelectorAll(".menuList");
-
-//迴圈生成各組內items
-itemGroup.forEach((group, index) => {
-  let menuList = menuLists[index];
-  menuList.innerHTML = generateItemHTML(group.group);
-});
+generateItems();
 
 //
 //item如果有紀錄會變成var(--secondary-color)
@@ -445,95 +449,68 @@ updateButton.forEach((e) => {
   });
 });
 
-cancelBtn.addEventListener("click", () => {
-  favDialog.close();
-  document.body.style.overflow = "auto";
-  ratingInput.value = "";
-  ratingStars.forEach((star) => {
-    star.classList.remove("active");
-  });
-  previewImage.style.display = "none";
-  uploadArea.style.backgroundColor = "var(--grey100)";
-
-  myForm.reset();
-});
-
-confirmBtn.addEventListener("click", () => {
-  favDialog.close();
-  document.body.style.overflow = "auto";
-});
-
-//點擊外部關閉
-window.onclick = function (e) {
-  if (e.target == favDialog) {
-    favDialog.close();
-    document.body.style.overflow = "auto";
-    previewImage.style.display = "none";
-    uploadArea.style.backgroundColor = "var(--grey100)";
-  }
-};
-
 //
 //rating
-const ratingStars = myForm.querySelectorAll(".star");
-const ratingInput = document.getElementById("rating");
+function activateRating() {
+  const ratingStars = myForm.querySelectorAll(".star");
+  const ratingInput = document.getElementById("rating");
+  ratingStars.forEach((star) => {
+    star.addEventListener("click", (e) => {
+      const selectedRating = e.target.getAttribute("data-rating");
+      ratingInput.value = selectedRating;
 
-// 評分按鈕點擊事件處理程序
-ratingStars.forEach((star) => {
-  star.addEventListener("click", (e) => {
-    const selectedRating = e.target.getAttribute("data-rating");
-    ratingInput.value = selectedRating;
+      // 移除所有星星的 active class
+      ratingStars.forEach((star) => {
+        star.classList.remove("active");
+      });
 
-    // 移除所有星星的 active class
-    ratingStars.forEach((star) => {
-      star.classList.remove("active");
+      // 將選取的星星以及之前的星星加上 active class
+      for (let i = 0; i < selectedRating; i++) {
+        ratingStars[i].classList.add("active");
+      }
     });
-
-    // 將選取的星星以及之前的星星加上 active class
-    for (let i = 0; i < selectedRating; i++) {
-      ratingStars[i].classList.add("active");
-    }
   });
-});
+}
+activateRating();
 
 //
 //上傳圖片
 const fileUploader = document.getElementById("file-uploader");
-const previewImage = document.getElementById("preview-image");
-const uploadArea = document.querySelector(".upload");
 let fileData;
 
-// 監聽文件選擇事件
-fileUploader.addEventListener("change", function (event) {
-  const file = event.target.files[0];
-  previewImage.style.display = "block";
-  uploadArea.style.backgroundColor = "black";
+function imgUpload(e) {
+  const previewImage = document.getElementById("preview-image");
+  const uploadArea = document.querySelector(".upload");
 
-  // 使用 FileReader 將文件轉換為 Data URL
+  const file = e.target.files[0]; //取得name
+
+  //將文件轉換為 Data URL
   const reader = new FileReader();
+  reader.readAsDataURL(file);
 
   reader.addEventListener("load", function () {
-    // 預覽圖片
+    //預覽圖片
     previewImage.src = reader.result;
+    previewImage.style.display = "block";
+    uploadArea.style.backgroundColor = "black";
 
-    // 將圖片數據 URL 存入 fileData
+    //將圖片數據存入 fileData
     fileData = {
       name: file.name,
       type: file.type,
       size: file.size,
-      dataURL: reader.result, // 正確地將數據 URL 設置到 fileData.dataURL
+      dataURL: reader.result,
     };
   });
-
-  reader.readAsDataURL(file);
-});
+}
+fileUploader.addEventListener("change", imgUpload);
 
 //
-// 在提交表單時觸發的事件處理函式
+//提交表單的處理
 myForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  // 從表單中獲取輸入值
+  //從表單中獲取值
   const brand = document.getElementById("inpBrand").value;
   const item = document.getElementById("inpItem").value;
   const size = document.getElementById("inpSize").value;
@@ -543,7 +520,7 @@ myForm.addEventListener("submit", (e) => {
   const sugar = document.querySelector('input[name="sugar"]:checked').value;
   const ice = document.querySelector('input[name="ice"]:checked').value;
   const note = document.getElementById("inpNote").value;
-  const rating = ratingInput.value;
+  const rating = document.getElementById("rating").value;
   const image = fileData || [];
   let id = new Date();
 
@@ -573,18 +550,7 @@ myForm.addEventListener("submit", (e) => {
     localStorage.setItem("record", JSON.stringify(newArr));
   }
 
-  // 清空表單欄位並重置星星樣式
-  ratingInput.value = "";
-  ratingStars.forEach((star) => {
-    star.classList.remove("active");
-  });
-
-  previewImage.style.display = "none";
-  uploadArea.style.backgroundColor = "var(--grey100)";
-
-  // 重設表單
-  myForm.reset();
-  fileData = [];
+  resetFrom();
 
   generateAverageScore();
   const averageScoreElements = document.querySelectorAll("#averageScore");
@@ -610,7 +576,31 @@ myForm.addEventListener("submit", (e) => {
   }, 2000);
 });
 
-// document.addEventListener("click", (e) => console.log(e.target));
+//不儲存form時關閉則重設表單
+function resetFrom() {
+  favDialog.close();
+  document.body.style.overflow = "auto";
+  const ratingInput = document.getElementById("rating");
+  ratingInput.value = "";
+  const ratingStars = myForm.querySelectorAll(".star");
+  ratingStars.forEach((star) => {
+    star.classList.remove("active");
+  });
+  const previewImage = document.getElementById("preview-image");
+  const uploadArea = document.querySelector(".upload");
+  previewImage.style.display = "none";
+  uploadArea.style.backgroundColor = "var(--grey100)";
+  myForm.reset();
+  fileData = [];
+}
+
+cancelBtn.addEventListener("click", resetFrom);
+//點擊外部關閉
+window.onclick = function (e) {
+  if (e.target == favDialog) {
+    resetFrom();
+  }
+};
 
 //
 //收藏品牌toggle並存入local storage

@@ -518,10 +518,6 @@ function renderDialog(target) {
         </p>
         <p>
           <input type="radio" name="ice" id="inpIce50" value="半冰"
-          ${target.ice === "半冰" ? 'checked="checked"' : ""}
-          />
-          <label for="inpIce50">半冰</label>
-        </p>
         <p>
           <input type="radio" name="ice" id="inpIce70" value="少冰"
           ${target.ice === "少冰" ? 'checked="checked"' : ""}
