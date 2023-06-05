@@ -65,7 +65,8 @@ const filterList = [
 ];
 
 function renderBrands(targetHTML) {
-  document.getElementById("brand-list").innerHTML = targetHTML;
+  const brandList = document.getElementById("brand-list");
+  brandList.innerHTML = targetHTML;
 }
 //產生品牌List
 function generateBrandHTML(targetBrands) {
@@ -75,10 +76,8 @@ function generateBrandHTML(targetBrands) {
     })
     .join("");
 }
-renderBrands(generateBrandHTML(filterList));
 
-//
-const editDialog = document.querySelector(".form");
+renderBrands(generateBrandHTML(filterList));
 
 //預設monthPicker當月
 function setDefaultMonth() {
@@ -86,7 +85,7 @@ function setDefaultMonth() {
   const currentYear = currentDate.getFullYear();
   const currentMonth = (currentDate.getMonth() + 1).toString().padStart(2, "0");
   const formattedDate = `${currentYear}-${currentMonth}`;
-  document.querySelector("#monthePicker").value = formattedDate;
+  document.querySelector("#monthPicker").value = formattedDate;
 }
 setDefaultMonth();
 
@@ -127,10 +126,8 @@ function renderHistoryList(historys) {
   `;
     })
     .join("");
-  //新增到HTML中
   historyGroup.innerHTML = historysHTML;
 
-  //
   //點擊historylist產生dialog
   const editButton = document.querySelectorAll(".history");
   editButton.forEach((e, index) => {
@@ -145,10 +142,13 @@ function renderHistoryList(historys) {
 }
 
 //產生初始historylist，預設篩選當月、排序日期最新
-const monthPicker = document.querySelector("#monthePicker");
 renderHistoryList(
   JSON.parse(localStorage.getItem("record"))
-    .filter((e) => e.date.slice(0, 7) === monthPicker.value.slice(0, 7))
+    .filter(
+      (e) =>
+        e.date.slice(0, 7) ===
+        document.querySelector("#monthPicker").value.slice(0, 7)
+    )
     .sort((a, b) => {
       if (b.date > a.date) {
         return 1; // b.date 晚於 a.date，b 應排在 a 之後
@@ -168,12 +168,27 @@ renderHistoryList(
 );
 
 //
-//篩選月份
+//篩選日期
 function filterMonth() {
-  const monthPicker = document.querySelector("#monthePicker");
-  const firstSixChars = monthPicker.value.slice(0, 7);
+  const firstSixChars = this.value.slice(0, 7);
   let historys = JSON.parse(localStorage.getItem("record")) || [];
-  historys = historys.filter((e) => e.date.slice(0, 7) === firstSixChars);
+  historys = historys
+    .filter((e) => e.date.slice(0, 7) === firstSixChars)
+    .sort((a, b) => {
+      if (b.date > a.date) {
+        return 1;
+      } else if (b.date < a.date) {
+        return -1;
+      } else {
+        if (b.time > a.time) {
+          return 1;
+        } else if (b.time < a.time) {
+          return -1;
+        } else {
+          return 0;
+        }
+      }
+    });
   renderHistoryList(historys);
 }
 
@@ -196,6 +211,7 @@ const sortBtn = document.querySelector(".sort");
 sortBtn.onclick = (e) => {
   dropDown.classList.toggle("showDrop");
 };
+
 //點擊空白處關閉sort
 document.addEventListener("click", (e) => {
   if (e.target === sortBtn || sortBtn.contains(e.target)) {
@@ -298,6 +314,7 @@ let targetDialog; //點擊到的local storage資料
 
 //生成dialog內容並帶入紀錄
 function renderDialog(target) {
+  const editDialog = document.querySelector(".form");
   let imgHTML = `<img id="preview-image" src="" style="display: none" />`;
   let uploadBackground = "";
   if (target.image.dataURL && target.image.dataURL != "/img/noImage.svg") {
@@ -460,6 +477,10 @@ function renderDialog(target) {
         </p>
         <p>
           <input type="radio" name="ice" id="inpIce50" value="半冰"
+          ${target.ice === "半冰" ? 'checked="checked"' : ""}
+          />
+          <label for="inpIce50">半冰</label>
+        </p>
         <p>
           <input type="radio" name="ice" id="inpIce70" value="少冰"
           ${target.ice === "少冰" ? 'checked="checked"' : ""}
@@ -515,6 +536,7 @@ function renderDialog(target) {
     ratingStars[i].classList.add("active");
   }
   //rating
+  // 評分按鈕點擊事件處理程序
   ratingStars.forEach((star) => {
     star.addEventListener("click", (e) => {
       const selectedRating = e.target.getAttribute("data-rating");
@@ -592,19 +614,19 @@ confirmDelete.onclick = (e) => {
   dialogFrame.close();
 
   //delete historyList
-  let historys_ = JSON.parse(localStorage.getItem("record"));
+  let historys = JSON.parse(localStorage.getItem("record"));
   const id =
     e.currentTarget.parentNode.parentNode.parentNode.querySelector(
       'input[name="id"]'
     ).value;
-  const index = historys_.findIndex((record) => record.id === id);
+  const index = historys.findIndex((record) => record.id === id);
   const deleteItem = document.querySelector(`[data-id="${id}"]`);
   deleteItem.remove();
 
   //delete from local storage
-  historys_.splice(index, 1);
+  historys.splice(index, 1);
 
-  localStorage.setItem("record", JSON.stringify(historys_));
+  localStorage.setItem("record", JSON.stringify(historys));
   dialogFrame.style.overflow = "auto";
   document.body.style.overflow = "auto";
 
@@ -631,7 +653,7 @@ myForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
   // 獲取原始資料
-  let historys = JSON.parse(localStorage.getItem("record"));
+  let historys_ = JSON.parse(localStorage.getItem("record"));
   const id = e.currentTarget.querySelector('input[name="id"]').value;
   const index = historys_.findIndex((item) => item.id === id);
 
@@ -657,33 +679,34 @@ myForm.addEventListener("submit", (e) => {
   };
 
   // 將編輯後的資料更新到該筆記錄
-  Object.assign(historys[index], editedData);
-  localStorage.setItem("record", JSON.stringify(historys));
 
-  //
-  //篩選月份、品牌
-  filterMonth();
-  filterBrand(document.querySelector("#brand-list"));
+  Object.assign(historys_[index], editedData);
+  // 將更新後的資料存回 local storage
+  localStorage.setItem("record", JSON.stringify(historys_));
 
-  // historys.sort((a, b) => {
-  //     if (b.date > a.date) {
-  //       return 1; // b.date 晚於 a.date，b 應排在 a 之後
-  //     } else if (b.date < a.date) {
-  //       return -1; // b.date 早於 a.date，b 應排在 a 之前
-  //     } else {
-  //       // 日期相同，比較時間
-  //       if (b.time > a.time) {
-  //         return 1; // b.time 晚於 a.time，b 應排在 a 之後
-  //       } else if (b.time < a.time) {
-  //         return -1; // b.time 早於 a.time，b 應排在 a 之前
-  //       } else {
-  //         return 0; // 日期和時間相同，保持原有順序
-  //       }
-  //     }
-  //   });
+  const firstSixChars = document
+    .querySelector("#monthPicker")
+    .value.slice(0, 7);
+  historys_ = historys_.filter((e) => e.date.slice(0, 7) === firstSixChars);
 
-  // renderHistoryList(historys);
+  historys_.sort((a, b) => {
+    if (b.date > a.date) {
+      return 1; // b.date 晚於 a.date，b 應排在 a 之後
+    } else if (b.date < a.date) {
+      return -1; // b.date 早於 a.date，b 應排在 a 之前
+    } else {
+      // 日期相同，比較時間
+      if (b.time > a.time) {
+        return 1; // b.time 晚於 a.time，b 應排在 a 之後
+      } else if (b.time < a.time) {
+        return -1; // b.time 早於 a.time，b 應排在 a 之前
+      } else {
+        return 0; // 日期和時間相同，保持原有順序
+      }
+    }
+  });
 
+  renderHistoryList(historys_);
   dialogFrame.close();
   document.body.style.overflow = "auto";
 
@@ -712,11 +735,9 @@ window.onclick = function (e) {
 
 //
 //chart.js
-const brandCounts = {};
-const itemCounts = {};
-
-//計算出現的次數
 function generateCharts() {
+  const brandCounts = {};
+  const itemCounts = {};
   let historys = JSON.parse(localStorage.getItem("record"));
   historys.forEach((e) => {
     const brand = e.brand;
