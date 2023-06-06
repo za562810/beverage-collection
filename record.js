@@ -235,6 +235,7 @@ const sortHigh = document.querySelector("#sortByHigh");
 const sortLow = document.querySelector("#sortByLow");
 const allSort = document.querySelectorAll("#myDropdown span");
 
+//sort方法
 //rating評分排序
 sortHigh.onclick = (e) => {
   filterState.sort = "highest";
@@ -285,7 +286,7 @@ sortOld.onclick = (e) => {
   sortOld.classList.add("active");
 };
 
-//
+//---------------------------------------------------------
 //產生dialog
 const dialogFrame = document.getElementById("editDialog");
 let targetDialog; //點擊到的local storage資料
@@ -605,6 +606,16 @@ confirmDelete.onclick = (e) => {
   historys.splice(index, 1);
 
   localStorage.setItem("record", JSON.stringify(historys));
+
+  //刪除舊的chart，產生新的
+  updateChart();
+  brandChart.data.labels = updateChart().topBrands;
+  brandChart.data.datasets.data = updateChart().topData1;
+  itemChart.data.labels = updateChart().topItems;
+  itemChart.data.datasets.data = updateChart().topData2;
+  brandChart.update();
+  itemChart.update();
+
   dialogFrame.style.overflow = "auto";
   document.body.style.overflow = "auto";
 
@@ -631,9 +642,9 @@ myForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
   // 獲取原始資料
-  let historys_ = JSON.parse(localStorage.getItem("record"));
+  let historys = JSON.parse(localStorage.getItem("record"));
   const id = e.currentTarget.querySelector('input[name="id"]').value;
-  const index = historys_.findIndex((item) => item.id === id);
+  const index = historys.findIndex((item) => item.id === id);
 
   // 檢查圖片是否有變更
   let updatedImage = targetDialog.image;
@@ -658,33 +669,12 @@ myForm.addEventListener("submit", (e) => {
 
   // 將編輯後的資料更新到該筆記錄
 
-  Object.assign(historys_[index], editedData);
+  Object.assign(historys[index], editedData);
   // 將更新後的資料存回 local storage
-  localStorage.setItem("record", JSON.stringify(historys_));
+  localStorage.setItem("record", JSON.stringify(historys));
 
-  const firstSixChars = document
-    .querySelector("#monthPicker")
-    .value.slice(0, 7);
-  historys_ = historys_.filter((e) => e.date.slice(0, 7) === firstSixChars);
+  applyFiltersAndSort();
 
-  historys_.sort((a, b) => {
-    if (b.date > a.date) {
-      return 1; // b.date 晚於 a.date，b 應排在 a 之後
-    } else if (b.date < a.date) {
-      return -1; // b.date 早於 a.date，b 應排在 a 之前
-    } else {
-      // 日期相同，比較時間
-      if (b.time > a.time) {
-        return 1; // b.time 晚於 a.time，b 應排在 a 之後
-      } else if (b.time < a.time) {
-        return -1; // b.time 早於 a.time，b 應排在 a 之前
-      } else {
-        return 0; // 日期和時間相同，保持原有順序
-      }
-    }
-  });
-
-  renderHistoryList(historys_);
   dialogFrame.close();
   document.body.style.overflow = "auto";
 
@@ -698,11 +688,11 @@ myForm.addEventListener("submit", (e) => {
   }, 1500);
 });
 
+//點擊取消關閉
 document.querySelector("#editDialog .cancel").onclick = (e) => {
   dialogFrame.close();
   document.body.style.overflow = "auto";
 };
-
 //點擊外部關閉
 window.onclick = function (e) {
   if (e.target == dialogFrame) {
@@ -713,7 +703,7 @@ window.onclick = function (e) {
 
 //
 //chart.js
-function generateCharts() {
+function updateChart() {
   const brandCounts = {};
   const itemCounts = {};
   let historys = JSON.parse(localStorage.getItem("record"));
@@ -734,62 +724,65 @@ function generateCharts() {
   const topItems = sortedItems.slice(0, 6).map((entry) => entry[0]);
   const topData2 = sortedItems.slice(0, 6).map((entry) => entry[1]);
 
-  //產生bar chart
-  const ctx1 = document.getElementById("brandChart");
-  const ctx2 = document.getElementById("itemChart");
-
-  new Chart(ctx1, {
-    type: "bar",
-    data: {
-      labels: topBrands,
-      datasets: [
-        {
-          label: "Brand",
-          data: topData1,
-          backgroundColor: "#f3a243",
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            stepSize: 1, // 設定刻度的固定距離為 1，確保刻度為整數
-            maxTicksLimit: 5, //最大刻度數量
-          },
-        },
-      },
-    },
-  });
-
-  new Chart(ctx2, {
-    type: "bar",
-    data: {
-      labels: topItems,
-      datasets: [
-        {
-          label: "Item",
-          data: topData2,
-          backgroundColor: "#9d9cd4",
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            stepSize: 1, // 設定刻度的固定距離為 1，確保刻度為整數
-            maxTicksLimit: 8, //最大刻度數量
-          },
-        },
-      },
-    },
-  });
+  return (newChartData = { topBrands, topData1, topItems, topData2 });
 }
-generateCharts();
+
+updateChart();
+
+//產生bar chart
+const ctx1 = document.getElementById("brandChart");
+const ctx2 = document.getElementById("itemChart");
+
+const brandChart = new Chart(ctx1, {
+  type: "bar",
+  data: {
+    labels: updateChart().topBrands,
+    datasets: [
+      {
+        label: "Brand",
+        data: updateChart().topData1,
+        backgroundColor: "#f3a243",
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1, // 設定刻度的固定距離為 1，確保刻度為整數
+          maxTicksLimit: 5, //最大刻度數量
+        },
+      },
+    },
+  },
+});
+
+const itemChart = new Chart(ctx2, {
+  type: "bar",
+  data: {
+    labels: updateChart().topItems,
+    datasets: [
+      {
+        label: "Item",
+        data: updateChart().topData2,
+        backgroundColor: "#9d9cd4",
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1, // 設定刻度的固定距離為 1，確保刻度為整數
+          maxTicksLimit: 8, //最大刻度數量
+        },
+      },
+    },
+  },
+});
